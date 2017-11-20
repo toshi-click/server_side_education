@@ -89,7 +89,7 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 - PHPからPostgreSQLへ接続できるようにインストールしてください  
 - `php -v` コマンドでPHPのバージョンが表示されることを確認してください
 
-# ステップ3: hello worldしよう
+# ステップ3: PHPの開発環境をセットアップしよう
 #### 3-1 htmlを表示しよう
 - リポジトリ内に`htdocs`フォルダを作成してください
 - 作成した`htdocs`フォルダ内に`hello world`と1文書いたHTMLファイルを作成してください
@@ -98,5 +98,31 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 #### 3-2 phpinfoを表示しよう
 - この課題プロジェクト内の`phpinfo.php`を`htdocs`フォルダ内にコピーしてください
 - WEBサーバー及びPHPの設定変更を行い、phpinfoが表示できるようにしてください
+- phpinfoでpgsqlが表示されることを確認してください
+
+ここまでで行なってきた内容は、どうだったでしょうか。とても多くのコマンドを実行することが必要で、コマンド実行忘れや、コマンドの打ち間違いが発生しうる内容になったかと思います。  
+2000年代にはこのようなサーバー構築が一般的でしたが、2010年代の現在大部分を自動化することが出来るようになっています。  
+そこで、これまで行なってきた内容をモダンに自動化してもらいます。  
+
+# ステップ4: 自動化
+#### 4-1 自動化準備
+- [Vagrant](https://www.vagrantup.com/downloads.html)をダウンロードしてインストールしてください
+- [公式ドキュメント](https://www.vagrantup.com/docs/provisioning/basic_usage.html)を参考にリポジトリ内に`Vagrantfile`を作成してください
+- 使用するBoxファイルは`centos/7`としてください
+
+#### 4-2 サーバー設定の自動化
+- Vagrantの機能[ansible_local](https://www.vagrantup.com/docs/provisioning/ansible_local.html)で`playbook`を実行してタイムゾーン設定やロケールの設定をしてください
+- `timedatectl`コマンドでタイムゾーンが`Asia/Tokyo`になっていることを確認してください
+- `localectl status`コマンドで`ja_JP.UTF-8`になっていることを確認してください
+
+#### 4-3 自動化ソフトウェアの自動インストール
+- Vagrantの機能[ansible_local](https://www.vagrantup.com/docs/provisioning/ansible_local.html)で`playbook`を実行して`Docker`と`Docker-compose`をインストールしましょう
+- `docker -v`コマンドでDockerバージョンが表示されることを確認してください
+- `docker-compose -v`コマンドでDocker Composenoバージョンが表示されることを確認してください
+
+#### 4-4 Webサーバーのコンテナ化
+- リポジトリ内に`docker`フォルダを作成してください
+- `docker`フォルダ内に`apache`フォルダを作成してください
+- 
 
 
