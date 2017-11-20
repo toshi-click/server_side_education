@@ -106,7 +106,7 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 2000年代にはこのようなサーバー構築が一般的でしたが、2010年代の現在大部分を自動化することが出来るようになっています。  
 そこで、これまで行なってきた内容をモダンに自動化してもらいます。  
 
-# ステップ4: 自動化
+# ステップ4: 環境設定自動化
 #### 4-1 自動化準備
 - [Vagrant](https://www.vagrantup.com/downloads.html)をダウンロードしてインストールしてください
 - [公式ドキュメント](https://www.vagrantup.com/docs/provisioning/basic_usage.html)を参考にリポジトリ内に`Vagrantfile`を作成してください
@@ -122,10 +122,24 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 - `docker -v`コマンドでDockerバージョンが表示されることを確認してください
 - `docker-compose -v`コマンドでDocker Composenoバージョンが表示されることを確認してください
 
-#### 4-4 Webサーバーのコンテナ化
+# ステップ5: ミドルウェア構築自動化
+#### 5-1 Webサーバー及びPHP実行環境のコンテナ化
 - リポジトリ内に`docker`フォルダを作成してください
 - 作成した`docker`フォルダ内に`apache`フォルダを作成してください
 - 作成した`apache`フォルダ内に`Dockerfile`を作成してください
-- 
+- [Dockerリファレンス](http://docs.docker.jp/engine/reference/builder.html)を参考に`Dockerfile`を作成し、Apache-PHP実行環境の構築を自動化してください
+- ステップ3で作成したphpinfoを表示出来るようにしてください
+- 使用するベースコンテナは`centos:latest`とします
 
+#### 5-2 データベース（PostgreSQL）のコンテナ化
+- リポジトリ内の`docker`フォルダ内に`postgres`フォルダを作成してください
+- 作成した`apache`フォルダ内に`Dockerfile`を作成してください
+- 5-1と同様にリファレンスを参考にデータベースサーバーの構築を自動化してください
+- 使用するベースコンテナは`centos:latest`とします
 
+#### 5-3 WEBサーバーコンテナとデータベースコンテナを連携させる
+- WEBサーバーからデータベースコンテナにアクセスが出来るようにする
+- `docker run`コマンドを使用して2つのコンテナを連携出来るようにすること
+- `docker exec -it [WEBサーバーコンテナ名] /bin/bash`でWEBサーバーコンテナに入り、`psql`コマンドでデータベースコンテナにアクセス出来ることを確認する
+ 
+#### 5-4 docker-composeで`docker run`を定義する
