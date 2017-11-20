@@ -143,3 +143,7 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 - `docker exec -it [WEBサーバーコンテナ名] /bin/bash`でWEBサーバーコンテナに入り、`psql`コマンドでデータベースコンテナにアクセス出来ることを確認する
  
 #### 5-4 docker-composeで`docker run`を定義する
+- リポジトリ内の`docker`フォルダ内に`docker-compose.yml`ファイルを作成してください
+- [Docker Composeリファレンス](http://docs.docker.jp/compose/compose-file.html)を参考にWEBサーバーコンテナとデータベースコンテナを定義してください
+- `docker-compose up -d`コマンドでコンテナが起動し、連携できていることを確認してください
+
