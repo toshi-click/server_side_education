@@ -83,10 +83,15 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 #### 2-2 Webサーバー(Apache HTTP Server)のインストール
 - [公式ページ](https://httpd.apache.org/)より最新バージョンのソースコードをダウンロードしてインストールしてください  
 - `httpd -v` コマンドでhttpdのバージョンが表示されることを確認してください
+- `vagrant reload`を実行した際にhttpdが自動起動するようにしてください。
+  - `ps`コマンドを使用して自動起動していることを確認してください。
 
 #### 2-3 データベース（PostgreSQL）のインストール
 - [公式ページ](https://www.postgresql.org/)より最新バージョンのソースコードをダウンロードしてインストールしてください  
 - `psql --version` コマンドでPostgreSQLのバージョンが表示されることを確認してください
+- `vagrant reload`を実行した際にpostgresqlが自動起動するようにしてください。
+  - `ps`コマンドを使用して自動起動していることを確認してください。
+- `psql -U postgres`コマンドでpostgresに接続できることを確認してください。
 
 #### 2-4 PHPのインストール
 - [公式ページ](http://php.net/)より最新バージョンのソースコードをダウンロードしてインストールしてください  
@@ -97,11 +102,11 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 #### 3-1 htmlを表示しよう
 - リポジトリ内に`htdocs`フォルダを作成してください
 - 作成した`htdocs`フォルダ内に`hello world`と1文書いたHTMLファイルを作成してください
-- Webサーバーの設定変更を行い、作成したHTMLファイルを表示できるようにしてください
+- Webサーバーの設定変更を行い、ブラウザからVMへアクセスし作成したHTMLファイルを表示できるようにしてください
 
 #### 3-2 phpinfoを表示しよう
 - この課題プロジェクト内の`phpinfo.php`を`htdocs`フォルダ内にコピーしてください
-- WEBサーバー及びPHPの設定変更を行い、phpinfoが表示できるようにしてください
+- WEBサーバー及びPHPの設定変更を行い、ブラウザからVMへアクセスしphpinfoが表示できるようにしてください
 - phpinfoでpgsqlが表示されることを確認してください
 
 ここまでで行なってきた内容は、どうだったでしょうか。とても多くのコマンドを実行することが必要で、コマンド実行忘れや、コマンドの打ち間違いが発生しうる内容になったかと思います。  
@@ -113,6 +118,12 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 - [Vagrant](https://www.vagrantup.com/downloads.html)をダウンロードしてインストールしてください
 - [公式ドキュメント](https://www.vagrantup.com/docs/provisioning/basic_usage.html)を参考にリポジトリ内に`Vagrantfile`を作成してください
 - 使用するBoxファイルは`centos/7`としてください
+
+ansibleのplaybook作成する際には下記ansibleのベストプラクティス等を参考に、host、role、vars、playbookを適切な粒度で分割してください。
+- https://knowledge.sakura.ad.jp/3084/
+- https://qiita.com/kotarella1110/items/79af4485bd7985935d6b
+- https://qiita.com/yabaiwebyasan/items/8fae0815766920e1f5e4
+- https://qiita.com/yuki-k/items/5609f7a23abbafa4ea08
 
 #### 4-2 サーバー設定の自動化
 - Vagrantの機能[ansible_local](https://www.vagrantup.com/docs/provisioning/ansible_local.html)で`playbook`を実行してタイムゾーン設定やロケールの設定をしてください
