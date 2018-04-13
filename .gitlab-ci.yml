@@ -39,12 +39,6 @@ pre-npm-build:
       - vendor/
     expire_in: 2 hrs
 
-check_yaml_format:
-  stage: lint
-  image: toshiclick/gitlab-ci-yamllint
-  script:
-    - yamllint .
-
 # https://github.com/phan/phan
 # PHP: Phan の指摘内容(Issueタイプ一覧)
 # http://algo13.net/php/phan/issue.html

@@ -4,7 +4,7 @@
   "scripts": {
     "eslint": "esw  .",
     "htmlhint": "htmlhint ./**/*.{htm,html}",
-    "stylelint": "stylelint \"./**/*.css\" \"./**/*.scss\""
+    "stylelint": "stylelint --config .stylelintrc \"./**/*.css\" \"./**/*.scss\""
   },
   "devDependencies": {
     "eslint": "*",
