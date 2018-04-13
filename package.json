@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "eslint": "esw  .",
-    "htmlhint": "htmlhint ./**/*.{htm,html}",
+    "htmlhint": "htmlhint ./**/*.{htm,html} --ignore **/vendor/**,**/node_modules/**",
     "stylelint": "stylelint --config .stylelintrc \"./**/*.css\" \"./**/*.scss\""
   },
   "devDependencies": {
