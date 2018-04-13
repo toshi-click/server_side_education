@@ -1,0 +1,39 @@
+# Created by https://www.gitignore.io/
+### Vagrant ###
+.vagrant/
+
+### Inteliij ALL ###
+.idea
+
+### Ansible ###
+*.retry
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# Folder config file
+Desktop.ini
+desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+# End of https://www.gitignore.io
+
+# the composer package lock file and install directory
+#/composer.lock
+/vendor/
+
+# php log
+log/phperror.log
