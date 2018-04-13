@@ -35,5 +35,5 @@ $RECYCLE.BIN/
 #/composer.lock
 /vendor/
 
-# php log
-log/phperror.log
+# Node.js
+/node_modules/

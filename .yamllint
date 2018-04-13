@@ -1,0 +1,12 @@
+# http://yamllint.readthedocs.io/en/latest/configuration.html
+extends: default
+rules:
+  # 80文字は少なすぎるので200文字にする
+  line-length:
+    max: 200
+    level: warning
+
+  # YAMLドキュメントの最初に'---'が無くても警告が出ないようにします。
+  document-start: disable
+  document-start:
+    present: false

@@ -1,0 +1,23 @@
+{
+  "name": "server_side_education",
+  "private": true,
+  "scripts": {
+    "eslint": "esw  .",
+    "htmlhint": "htmlhint ./**/*.{htm,html}",
+    "stylelint": "stylelint \"./**/*.css\" \"./**/*.scss\""
+  },
+  "devDependencies": {
+    "eslint": "*",
+    "eslint-plugin-prettier": "*",
+    "eslint-plugin-react": "*",
+    "eslint-config-airbnb": "*",
+    "eslint-plugin-import": "*",
+    "eslint-plugin-jsx-a11y": "*",
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-preset-airbnb": "*",
+    "htmlhint": "*",
+    "stylelint": "*",
+    "stylelint-config-standard": "*"
+  }
+}

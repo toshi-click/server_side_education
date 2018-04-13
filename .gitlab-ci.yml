@@ -1,0 +1,88 @@
+---
+# サブモジュールを更新する場合にはこれを有効にする
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+cache:
+  # ジョブ毎にキャッシュを共有する設定
+  key: "$CI_JOB_NAME"
+  untracked: true
+  paths:
+    - vendor/
+    - node_modules/
+
+stages:
+  - pre-build
+  - lint
+  - deploy
+
+pre-php-build:
+  stage: pre-build
+  image: toshiclick/gitlab-ci-php-base
+  script:
+    - curl -fsSL https://getcomposer.org/download/1.4.2/composer.phar > composer.phar
+    - php composer.phar install --prefer-dist --no-progress --ansi --dev
+  artifacts:
+    untracked: true
+    paths:
+      - vendor/
+    expire_in: 2 hrs
+
+pre-npm-build:
+  stage: pre-build
+  image: node:latest
+  script:
+    - npm install
+  artifacts:
+    untracked: true
+    paths:
+      - vendor/
+    expire_in: 2 hrs
+
+check_yaml_format:
+  stage: lint
+  image: toshiclick/gitlab-ci-yamllint
+  script:
+    - yamllint .
+
+# https://github.com/phan/phan
+# PHP: Phan の指摘内容(Issueタイプ一覧)
+# http://algo13.net/php/phan/issue.html
+phan:
+  stage: lint
+  image: toshiclick/gitlab-ci-php-phan
+  script:
+    - phan -z -x -k .phan/config.php
+
+phpcs:
+  stage: lint
+  image: toshiclick/gitlab-ci-php-base
+  script:
+    # PHP_CodeSnifferによるコーディング規約チェック
+    # https://github.com/squizlabs/PHP_CodeSniffer
+    - vendor/bin/phpcs --ignore=./htdocs/lib/* --standard=ruleset.xml ./htdocs/
+
+htmlhint:
+  stage: lint
+  image: node:latest
+  script:
+    - npm run htmlhint
+
+stylelint:
+  stage: lint
+  image: node:latest
+  script:
+    - npm run stylelint
+
+# デプロイ
+run_ansible:
+  stage: deploy
+  image: toshiclick/gitlab-ci-ansible-centos
+  script:
+    - pwd
+    - echo -e "$SERVER_KEY" > /builds/training/server_side_education/server.key
+    - chmod 600 /builds/training/server_side_education/server.key
+    # サーバへプレイブックを実行
+    - ansible-playbook -l training -i ansible/hosts/training.yml ansible/playbook/release.yml
+  only:
+    - deploy
