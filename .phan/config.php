@@ -36,6 +36,8 @@ return [
 
     // 問題が報告されないようにするためのブラックリスト
     'suppress_issue_types' => [
+        'PhanUndeclaredClassMethod',
+        'PhanUndeclaredVariableDim',
     ],
 
     // 検査対象ディレクトリ
