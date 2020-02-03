@@ -1,6 +1,0 @@
-{
-  "require": {
-    "squizlabs/php_codesniffer": "*",
-    "giggsey/libphonenumber-for-php": "*"
-  }
-}
