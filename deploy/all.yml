@@ -1,10 +1,16 @@
 # サーバー系共通処理前段
-- hosts: all
+- hosts:
+    - all
   become: true
   become_user: root
-  roles:
+#  roles:
     # roleを作成してここに追加していく
 #    -
   tasks:
     # roleで共通化出来ないようなタスクはここに書く
-#    -
+    - name: "shell test"
+      command: uname -a
+      register: shell_test
+
+    - name: "dump variables shell_test"
+      debug: var=shell_test

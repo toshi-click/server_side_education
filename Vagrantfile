@@ -27,19 +27,18 @@ if Vagrant.has_plugin?('vagrant-hostmanager')
 end
 
 Vagrant.configure("2") do |config|
-  # cent os 7
-  config.vm.box = "centos/8"
+  config.vm.box = "centos/7"
   config.disksize.size = '50GB'
   config.vm.boot_timeout = 600
 
-  config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
-
-  config.vm.hostname = "vm.infra_training.cs.test"
+  config.vm.hostname = "vm.training.cs.test"
   config.hostmanager.enabled = true
   # 以下の行を追加すると、ホストOSのhostsへも追加してくれる。
   config.hostmanager.manage_host = true
   # 以下の行を追加すると、ゲストOSのhostsへも追加してくれる。
   config.hostmanager.manage_guest = true
+
+  config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
   # 構築に必要なリソース
   # VirtualboxのGUI上で見える名前など設定
@@ -62,7 +61,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.254.41"
 
   config.vm.provision "ansible_local", run: "always" do |ansible|
-    ansible.limit = "vm.infra_training.cs.test"
+    ansible.limit = "training_dev"
     ansible.inventory_path = "./deploy/hosts/all.yml"
     ansible.playbook = "./deploy/all.yml"
   end

@@ -54,7 +54,7 @@
 ステップ毎にMRを作成し、メンターに確認してもらう形とします
 
 ## 課題
-- [課題URL](http://vm.infra_training.cs.test/kadai/index.html)
+- [課題URL](http://vm.training.cs.test/kadai/index.html)
 
 ## DDLを作成してコンテナでテストしたい場合にコンテナ内のpostgresに接続する方法
 ```

@@ -4,27 +4,14 @@ all:
     ansible_ssh_port: 22
     ansible_ssh_private_key_file: ~/.ssh/ansible_sshkey
   children:
-    # 主に検証環境社内にあるサーバーを定義
-    stg:
-      vars:
-        stage: "stg"
-        deploy_dir: /export/www/cswork
-        cswork_stg:
-          hosts:
-            cswork.cs.test:
-              server_group: "cswork"
     # 主に開発環境(VM上などに構築環境が用意されているものを定義)
     dev:
       vars:
         ansible_connection: local
-        stage: "dev"
-        deploy_dir: /export/www/cswork
       children:
-        cswork_dev:
+        training_dev:
           hosts:
-            vm.cswork.cs.test:
-              server_group: "cswork"
-    cswork:
+            vm.training.cs.test:
+    training:
       children:
-        cswork_stg: {}
-        cswork_dev: {}
+        training_dev: {}
