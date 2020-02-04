@@ -70,7 +70,6 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 - 言語設定をコマンドで日本語に変更し`localectl status`コマンドで`ja_JP.UTF-8`になっていることを確認してください。
 - あなたの名前のユーザーを作成してください。
 - あなたの名前のユーザーのパスワードを変更してください。
-- あなたの名前のユーザーがsudoを行えるように`/etc/sudoers.d/`へ適切にファイルを作成してください。
 - カーネルパラメーターをチューニングしてください。
     - `net.core.somaxconn`を`65535`にしてください。
         - 備考：TCPソケットの接続要求キューのキャパシティ。
@@ -80,6 +79,19 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
         - 備考：キューに繋げるパケット最大数
     - `net.ipv4.conf.all.forwarding`を`1`にしてください。
         - 備考：Dockerコンテナと外のネットワークのパケットのforwardingするために必要
+
+#### 1-2 Linuxのセキュリティ設定
+- `kadai/step1`フォルダに`1-2.md`を作成してください。
+- 設定したコマンド及び結果を上記ファイルに保存してください。また適切にコメントを付けてください。
+- `iptables`を`yum install`して下記のポート番号が開放されたファイアウォールの設定をしてください。
+    - anuからの受信を許可
+        - 22, 25, 80, 110, 443
+    - ローカルネットワーク(`192.168.0.0/16`)からの受信を許可
+        - 5432
+- あなたの名前のユーザーがsudoを行えるように`/etc/sudoers.d/`へ適切にファイルを作成してください。
+- `/etc/ssh/sshd_config`の設定変更を行い下記が行えないようにしてください
+    - rootユーザーでのsshログイン
+    - パスワード認証でのsshログイン
 
 # ステップ2: PHPの開発環境を構築しよう
 #### 2-1 Webサーバー(Apache HTTP Server)のインストール
@@ -127,15 +139,7 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 
 # ステップ4: 環境設定自動化
 #### 4-1 自動化準備
-- [Vagrant](https://www.vagrantup.com/downloads.html)をダウンロードしてインストールしてください
-- [公式ドキュメント](https://www.vagrantup.com/docs/provisioning/basic_usage.html)を参考にリポジトリ内に`Vagrantfile`を作成してください
-- 使用するBoxファイルは`centos/7`としてください
-
-ansibleのplaybook作成する際には下記ansibleのベストプラクティス等を参考に、host、role、vars、playbookを適切な粒度で分割してください。
-- https://knowledge.sakura.ad.jp/3084/
-- https://qiita.com/kotarella1110/items/79af4485bd7985935d6b
-- https://qiita.com/yabaiwebyasan/items/8fae0815766920e1f5e4
-- https://qiita.com/yuki-k/items/5609f7a23abbafa4ea08
+`vagrant destroy`コマンドを実行(もしくはVirtualboxのGUI画面から削除)しVMを削除してください。
 
 #### 4-2 サーバー設定の自動化
 - Vagrantの機能[ansible_local](https://www.vagrantup.com/docs/provisioning/ansible_local.html)で`playbook`を実行してタイムゾーン設定やロケールの設定をしてください
