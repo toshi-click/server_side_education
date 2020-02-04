@@ -1,0 +1,18 @@
+Options FollowSymLinks MultiViews
+
+AddType application/x-httpd-php .php .html
+
+# Add include_path
+php_value include_path ".:/usr/local/lib/php:/php/includes:/export/www/training/vendor:/export/www/training/htdocks/lib"
+
+php_value mail.add_x_header Off
+php_flag log_errors On
+php_value error_log "/export/www/training/log/phperror.log"
+
+RewriteEngine On
+RewriteBase /
+
+# Forbidden
+ErrorDocument 403 /403.php
+# Not Foundページ
+ErrorDocument 404 /404.php

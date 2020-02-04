@@ -1,0 +1,17 @@
+<!-- A rule for https://github.com/squizlabs/PHP_CodeSniffer -->
+<ruleset name="Catalyst system coding Standard">
+    <description>Catalyst system coding Standard</description>
+
+    <rule ref="PSR1">
+        <!-- 2.3. 副作用 http://www.infiniteloop.co.jp/docs/psr/psr-1-basic-coding-standard.html -->
+         <exclude name="PSR1.Files.SideEffects"/>
+    </rule>
+    <rule ref="PSR2">
+    </rule>
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="200"/>
+            <property name="absoluteLineLimit" value="300"/>
+        </properties>
+    </rule>
+</ruleset>
