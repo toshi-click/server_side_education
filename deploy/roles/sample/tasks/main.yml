@@ -1,0 +1,7 @@
+---
+- name: "shell test sample"
+  command: uname -a
+  register: shell_test
+
+- name: "dump variables shell_test"
+  debug: var=shell_test

@@ -140,42 +140,42 @@ PHP研修では、PHPの基礎的な使用法や、DB(データベース)と連�
 
 これ以降の作業は`vagrant destroy`でVMを削除した状態で、`vagrant up`を行った際に毎回同じ設定のサーバーが起動するように構築を行っていただきます。
 
-このリポジトリは
+ansibleの設定はdeployの中にファイルが用意されていますので、ステップ毎にroleを作成し、設定自動化してください。
 
-#### 4-2 サーバー設定の自動化
-- Vagrantの機能[ansible_local](https://www.vagrantup.com/docs/provisioning/ansible_local.html)で`playbook`を実行してタイムゾーン設定やロケールの設定をしてください
-- `timedatectl`コマンドでタイムゾーンが`Asia/Tokyo`になっていることを確認してください
-- `localectl status`コマンドで`ja_JP.UTF-8`になっていることを確認してください
+`deploy/roles/sample`にrole作成で必要なディレクトリとファイルを配置しておきましたので、使用してください。
 
-#### 4-3 自動化ソフトウェアの自動インストール
-- Vagrantの機能[ansible_local](https://www.vagrantup.com/docs/provisioning/ansible_local.html)で`playbook`を実行して`Docker`と`Docker-compose`をインストールしましょう
+作成したtaskやroleは全て`deploy/all.yml`から呼び出すように作成してください。
+
+ansible-lintが導入されていますので、何かしら警告が出た場合は修正してください。
+
+#### 3-2 サーバー設定の自動化
+- 1-1及び1-2で行った設定をansibleで自動化してください。
+
+#### 3-3 コンテナパッケージの自動インストール
+- `deploy/roles/docker`を作成し、docker-ce及びdocker-composeのインストールを自動で行えるように作成してください。
+- docker-composeはバージョンダウン・バージョンアップがvarsに定義した値によって行えるように作成してください。
 - `docker -v`コマンドでDockerバージョンが表示されることを確認してください
 - `docker-compose -v`コマンドでDocker Composenoバージョンが表示されることを確認してください
 
-# ステップ5: ミドルウェア構築自動化
-#### 5-1 Webサーバー及びPHP実行環境のコンテナ化
+# ステップ4: dockerコンテナ構築
+#### 4-1 Webサーバー及びPHP実行環境のコンテナ化
 - リポジトリ内に`docker`フォルダを作成してください
 - 作成した`docker`フォルダ内に`apache`フォルダを作成してください
 - 作成した`apache`フォルダ内に`Dockerfile`を作成してください
 - [Dockerリファレンス](http://docs.docker.jp/engine/reference/builder.html)を参考に`Dockerfile`を作成し、Apache-PHP実行環境の構築を自動化してください
-- ステップ3で作成したphpinfoを表示出来るようにしてください
-- 使用するベースコンテナは`centos:latest`とします
+- ブラウザで`http://vm.training.cs.test/phpinfo.php`へアクセスしPHPの情報が見れることを確認してください。
+- 使用するベースコンテナは`centos:7`とします
 
 #### 5-2 データベース（PostgreSQL）のコンテナ化
 - リポジトリ内の`docker`フォルダ内に`postgres`フォルダを作成してください
 - 作成した`apache`フォルダ内に`Dockerfile`を作成してください
 - 5-1と同様にリファレンスを参考にデータベースサーバーの構築を自動化してください
-- 使用するベースコンテナは`centos:latest`とします
+- 使用するベースコンテナは`centos:7`とします
 
 #### 5-3 WEBサーバーコンテナとデータベースコンテナを連携させる
-- WEBサーバーからデータベースコンテナにアクセスが出来るようにする
-- `docker run`コマンドを使用して2つのコンテナを連携出来るようにすること
+- `docker-compose.yml`ファイルを編集し、WebサーバーとDBサーバーが連携できるようにしてください。
+- `docker-compose up -d`コマンドでWEBサーバーとDBサーバーが起動するようにすること。
+- WEBサーバーからデータベースコンテナにアクセスが出来るようにすること
 - `docker exec -it [WEBサーバーコンテナ名] /bin/bash`でWEBサーバーコンテナに入り、`psql`コマンドでデータベースコンテナにアクセス出来ることを確認する
-- ブラウザから`htdocs/index.php`へアクセスし、データベースがPHP経由で操作出来るようにする。
-    - ここで必要なconfは`htdocs/lib/Conf.inc`です。データベース名などは適宜修正してください。
- 
-#### 5-4 docker-composeで`docker run`を定義する
-- リポジトリ内の`docker`フォルダ内に`docker-compose.yml`ファイルを作成してください
-- [Docker Composeリファレンス](http://docs.docker.jp/compose/compose-file.html)を参考にWEBサーバーコンテナとデータベースコンテナを定義してください
-- `docker-compose up -d`コマンドでコンテナが起動し、連携できていることを確認してください
-
+- ブラウザから`http://vm.training.cs.test/index.php`へアクセスし、データベースがPHP経由で操作出来るようになっていること。
+    - ここで必要なconfは`app/htdocs/lib/Conf.inc`です。データベース名などは適宜修正してください。

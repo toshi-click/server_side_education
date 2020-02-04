@@ -1,0 +1,105 @@
+---
+# サブモジュールを更新する場合にはこれを有効にする
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
+.except_default: &except_default
+  except:
+    - develop
+    - master
+
+# .deploy_default: &deploy_default
+#   image: catalystsystem/gitlab-ci-ansible-centos
+#   before_script:
+#     - mkdir /tmp/training
+#     - echo -e "$PRODUCTION_KEY" > /tmp/training/production.key
+#     - chmod 600 /tmp/training/production.key
+#     - echo -e "$VAULT_PASS" > /builds/$CI_PROJECT_PATH/.ansible_vault_pass
+#   after_script:
+#     - rm -fr /tmp/training/production.key
+#     - rm -fr /tmp/training/.ansible_vault_pass
+
+cache:
+  # ブランチ毎にキャッシュする設定
+  key: "$CI_COMMIT_REF_NAME"
+  #  untracked: true
+  paths:
+    - vendor/
+
+stages:
+  - build
+  - lint
+  # - deploy
+  # - review_after_delete
+
+php_build:
+  <<: *except_default
+  stage: build
+  image: catalystsystem/gitlab-ci-php-base
+  script:
+    - php composer.phar install --prefer-dist --no-progress --ansi --dev
+  artifacts:
+    untracked: true
+    paths:
+      - vendor/
+    expire_in: 4 hrs
+
+# filelint 改行コードを見たりする
+filelint:
+  <<: *except_default
+  stage: lint
+  image: catalystsystem/gitlab-ci-ansible-centos
+  script:
+    - filelint .
+  dependencies: []
+
+# https://github.com/phan/phan
+# PHP: Phan の指摘内容(Issueタイプ一覧)
+# http://algo13.net/php/phan/issue.html
+phan:
+  <<: *except_default
+  stage: lint
+  image: catalystsystem/gitlab-ci-php-phan
+  script:
+    - phan --version
+    - phan -z -x -k .phan/config.php
+
+phpcs:
+  <<: *except_default
+  stage: lint
+  image: catalystsystem/gitlab-ci-php-base
+  script:
+    # PHP_CodeSnifferによるコーディング規約チェック
+    # https://github.com/squizlabs/PHP_CodeSniffer
+    - vendor/bin/phpcs --ignore=./htdocs/lib/* --standard=ruleset.xml ./htdocs/
+
+# 研修サーバーにデプロイ
+# run_prod_server_ansible:
+#   <<: *deploy_default
+#   stage: deploy
+#   script:
+#     - ansible-playbook -l prd -i provision/hosts/training.yml provision/11_production_release.yml
+#       --extra-vars "branch=$CI_BUILD_REF_NAME" --vault-pass /builds/$CI_PROJECT_PATH/.ansible_vault_pass
+#   only:
+#     - master
+
+# deploy_merge_requests_staging:
+#   stage: deploy
+#   script:
+#     # developブランチの検証コンテナを立ち上げる
+#     - ansible-playbook -l prd -i provision/hosts/training.yml provision/12_production_merge_requests_release.yml
+#       --extra-vars "release_dir=/export/www/mr/$CI_PROJECT_NAME/$CI_MERGE_REQUEST_IID/$CI_PROJECT_NAME branch=$CI_MERGE_REQUEST_IID"
+#       --vault-pass /builds/$CI_PROJECT_PATH/.ansible_vault_pass
+#   only:
+#     - merge_requests
+
+# merge_requests_review_end:
+#   stage: review_after_delete
+#   script:
+#     - ansible-playbook -l prd -i provision/hosts/training.yml provision/13_production_merge_requests_delete.yml
+#       --extra-vars "release_dir=/export/www/mr/$CI_PROJECT_NAME/$CI_MERGE_REQUEST_IID/$CI_PROJECT_NAME branch=$CI_MERGE_REQUEST_IID"
+#       --vault-pass /builds/$CI_PROJECT_PATH/.ansible_vault_pass
+#   only:
+#     - merge_requests
+#   when: manual
+#   dependencies: []

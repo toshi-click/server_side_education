@@ -5,10 +5,10 @@
   become_user: root
 #  roles:
     # roleを作成してここに追加していく
-#    -
+    - sample
   tasks:
     # roleで共通化出来ないようなタスクはここに書く
-    - name: "shell test"
+    - name: "shell test sample"
       command: uname -a
       register: shell_test
 
