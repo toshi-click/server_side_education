@@ -1,0 +1,10 @@
+# サーバー系共通処理前段
+- hosts: all
+  become: true
+  become_user: root
+  roles:
+    # roleを作成してここに追加していく
+#    -
+  tasks:
+    # roleで共通化出来ないようなタスクはここに書く
+#    -

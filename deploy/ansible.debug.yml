@@ -1,0 +1,8 @@
+# Ansibleに変数が適切に解釈されてるかなどをチェックできる
+- hosts: all
+  tasks:
+    - name: "Display all variables/facts known for a host"
+      debug: var=hostvars[inventory_hostname]
+
+    - name: "dump variables vars"
+      debug: var=vars
