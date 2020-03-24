@@ -3,7 +3,7 @@
     - all
   become: true
   become_user: root
-#  roles:
+  roles:
     # roleを作成してここに追加していく
     - sample
   tasks:
